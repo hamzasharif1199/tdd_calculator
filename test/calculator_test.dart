@@ -12,5 +12,10 @@ void main() {
       final calculator = StringCalculator();
       expect(calculator.add(''), 0);
     });
+
+    test('Multiple numbers should return their sum', () {
+      final calculator = StringCalculator();
+      expect(calculator.add("1,2,3,4,5"), 15); // RED
+    });
   });
 }
