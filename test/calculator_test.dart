@@ -17,5 +17,10 @@ void main() {
       final calculator = StringCalculator();
       expect(calculator.add("1,2,3,4,5"), 15); // RED
     });
+
+    test('should handle newlines as delimiters along with commas', () {
+      final calculator = StringCalculator();
+      expect(calculator.add("1\n2,3"), 6); // RED: Fails initially
+    });
   });
 }
