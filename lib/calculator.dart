@@ -1,25 +1,25 @@
 class StringCalculator {
   int add(String numbers) {
-    // Return 0 for empty input
     if (numbers.isEmpty) return 0;
 
-    String delimiter = ','; // default delimiter
-    String numberString = numbers;
-
-    // Check if input starts with custom delimiter syntax
+    String delimiter = ',';
     if (numbers.startsWith('//')) {
       final parts = numbers.split('\n');
-      delimiter = parts[0].substring(2); // extract custom delimiter
-      numberString = parts.sublist(1).join('\n'); // join remaining lines
+      delimiter = parts.first.substring(2); // custom delimiter
+      numbers = parts.sublist(1).join('\n');
     }
 
-    // Normalize newlines to use the same delimiter
-    numberString = numberString.replaceAll('\n', delimiter);
+    // Replace \n with delimiter for uniform splitting
+    final parts = numbers.replaceAll('\n', delimiter).split(delimiter);
 
-    // Split numbers using delimiter, parse to int, and sum
-    return numberString
-        .split(delimiter)
-        .map((s) => int.tryParse(s.trim()) ?? 0) // handle invalid integers safely
-        .fold(0, (a, b) => a + b);
+    final parsedNumbers = parts.map((s) => int.tryParse(s.trim()) ?? 0).toList();
+
+    // Check for negatives
+    final negativeNumbers = parsedNumbers.where((n) => n < 0).toList();
+    if (negativeNumbers.isNotEmpty) {
+      throw FormatException('Negative numbers not allowed: ${negativeNumbers.join(',')}');
+    }
+
+    return parsedNumbers.fold(0, (a, b) => a + b);
   }
 }
