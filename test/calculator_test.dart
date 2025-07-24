@@ -3,7 +3,7 @@ import 'package:tdd_calculator/calculator.dart';
 
 void main() {
 
-  group('StringCalculator - TDD Step 1', () {
+  group('StringCalculator - TDD', () {
     test('should return the number when one number is passed', () {
       final calculator = StringCalculator();
       expect(calculator.add("1"), 1);
@@ -22,5 +22,13 @@ void main() {
       final calculator = StringCalculator();
       expect(calculator.add("1\n2,3"), 6); // RED: Fails initially
     });
+
+    test('Supports custom delimiter like ";"', () {
+      final calculator = StringCalculator();
+      expect(calculator.add("//;\n1;2"), 3); // RED
+    });
+
+
+
   });
 }
