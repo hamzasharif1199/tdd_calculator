@@ -1,18 +1,23 @@
 class StringCalculator {
-  /// Adds numbers in a string that may use commas or newlines as delimiters.
-  /// Example: "1\n2,3" -> 6
-  /// - Returns 0 if the input string is empty.
-  /// - Ignores invalid numbers by treating them as 0.
   int add(String numbers) {
     if (numbers.isEmpty) return 0;
 
-    // Normalize input by replacing newline characters with commas
-    final sanitized = numbers.replaceAll('\n', ',');
+    String delimiter = ',';
+    String numberString = numbers;
 
-    // Split the string by comma, parse each number, and sum them
-    return sanitized
-        .split(',')
+    // Check for custom delimiter at the beginning
+    if (numbers.startsWith('//')) {
+      final parts = numbers.split('\n');
+      delimiter = parts[0].substring(2); // extract delimiter from "//;\n"
+      numberString = parts[1]; // numbers part
+    }
+
+    // Replace \n with delimiter to support both
+    numberString = numberString.replaceAll('\n', delimiter);
+
+    return numberString
+        .split(delimiter)
         .map((s) => int.tryParse(s.trim()) ?? 0)
-        .fold(0, (sum, num) => sum + num);
+        .fold(0, (a, b) => a + b);
   }
 }
